@@ -31,9 +31,9 @@ namespace BlogApp.Data.Concrete.EFCore
                 if (!context.Users.Any())
                 {
                     context.Users.AddRange(
-                        new Entity.User { UserName = "bugraozturk" , Image= "team-1.jpg" },
-                        new Entity.User { UserName = "admin" , Image = "team-2.jpg" },
-                        new Entity.User { UserName = "test" , Image = "team-3.jpg" }
+                        new Entity.User { UserName = "bugraozturk" ,  Image= "team-1.jpg",Name = "Buğra Öztürk", Email = "bugraozturk@hotmail.com", Password="123456" },
+                        new Entity.User { UserName = "admin" , Image = "team-2.jpg", Name = "Mert Ak", Email = "mertak@hotmail.com", Password = "123456" },
+                        new Entity.User { UserName = "test" , Image = "team-3.jpg", Name = "test test", Email = "test@hotmail.com", Password = "123456" }
                         );
                     context.SaveChanges();
 
