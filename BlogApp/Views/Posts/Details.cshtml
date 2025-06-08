@@ -4,10 +4,14 @@
     <div class="col-lg-8">
         <div class="bg-white p-4">
             <h1 class="h4 mb-4">@Model.Title</h1>
-            <div class="tags">
-            <a href="#" class="bagde bg-primary bg-opacity-10 text-danger mb-2 fw-bold">Php</a>
-                <a href="#" class="bagde bg-primary bg-opacity-10 text-danger mb-2 fw-bold">Web Development</a>
+            <div class="tags"> 
+                @foreach(var tag in Model.Tags)
+                {
+                    <a href="/posts/tag/@tag.Url" class="bagde bg-@tag.Color bg-opacity-10 text-@tag.Color mb-2 fw-bold">@tag.Text</a>
+                }
             </div>
+         
+          
             <img src="~/img/@Model.Image" class="img-fluid rounded" />
            
             <div>

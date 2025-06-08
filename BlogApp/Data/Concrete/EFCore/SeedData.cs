@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using BlogApp.Entity;
+using Microsoft.EntityFrameworkCore;
 
 namespace BlogApp.Data.Concrete.EFCore
 {
@@ -19,10 +20,10 @@ namespace BlogApp.Data.Concrete.EFCore
                 {
                     context.Tags.AddRange(
 
-                        new Entity.Tag { Text = "Web Programlama", Url= "web-programlama" },
-                        new Entity.Tag { Text = "Backend", Url = "backend" },
-                        new Entity.Tag { Text = "Frontend", Url = "frontend" },
-                        new Entity.Tag { Text = "Full Stack", Url = "full-stack" }
+                        new Entity.Tag { Text = "Web Programlama", Url= "web-programlama", Color = TagColors.warning },
+                        new Entity.Tag { Text = "Backend", Url = "backend",  Color = TagColors.secondary },
+                        new Entity.Tag { Text = "Frontend", Url = "frontend", Color = TagColors.danger },
+                        new Entity.Tag { Text = "Full Stack", Url = "full-stack", Color = TagColors.primary }
                     );
                     context.SaveChanges();
                 }
