@@ -12,6 +12,7 @@ builder.Services.AddDbContext<BlogContext>(options =>
 
 
 builder.Services.AddScoped<IPostRepository, EFPostRepository>();
+builder.Services.AddScoped<ITagRepository, EFTagRepository>();
 
 var app = builder.Build();
 
