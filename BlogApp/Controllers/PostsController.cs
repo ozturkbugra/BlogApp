@@ -2,6 +2,7 @@
 using BlogApp.Data.Concrete.EFCore;
 using BlogApp.Entity;
 using BlogApp.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Security.Claims;
@@ -10,6 +11,7 @@ namespace BlogApp.Controllers
 {
     public class PostsController : Controller
     {
+
         private IPostRepository _postrepository;
         private ICommentRepository _commentrepository;
 
@@ -18,8 +20,6 @@ namespace BlogApp.Controllers
             _postrepository = postRepository;
             _commentrepository = commentrepository;
         }
-
-
 
         public async Task<IActionResult> Index(string url)
         {
@@ -73,18 +73,40 @@ namespace BlogApp.Controllers
             //return Redirect("/posts/details/"+Url);
         }
 
-
+       
         public ActionResult Create()
         {
             if (!User.Identity!.IsAuthenticated)
             {
-                return RedirectToAction("Index", "Posts");
+                return RedirectToAction("Index");
             }
-
             return View();
         }
 
+    
+        public async Task<IActionResult> List()
+        {
+            if (!User.Identity!.IsAuthenticated)
+            {
+                return RedirectToAction("Index");
+            }
+            var userID = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier));
+            var role = User.FindFirstValue(ClaimTypes.Role);
+
+            var posts = _postrepository.Posts;
+
+            if (string.IsNullOrEmpty(role))
+            {
+                posts = posts.Where(x => x.UserID == userID);
+            }
+
+
+
+            return View(await posts.ToListAsync());
+        }
+
         [HttpPost]
+        [Authorize]
         public ActionResult Create(PostCreateViewModel model)
         {
             var userID = User.FindFirstValue(ClaimTypes.NameIdentifier);
