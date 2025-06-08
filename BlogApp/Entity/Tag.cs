@@ -2,7 +2,7 @@
 {
     public enum TagColors
     {
-        primary, danger , warning, success, secondary
+        primary, danger , warning, success, secondary, info
     }
     public class Tag
     {

@@ -31,9 +31,9 @@ namespace BlogApp.Data.Concrete.EFCore
                 if (!context.Users.Any())
                 {
                     context.Users.AddRange(
-                        new Entity.User { UserName = "bugraozturk" },
-                        new Entity.User { UserName = "admin" },
-                        new Entity.User { UserName = "test" }
+                        new Entity.User { UserName = "bugraozturk" , Image= "team-1.jpg" },
+                        new Entity.User { UserName = "admin" , Image = "team-2.jpg" },
+                        new Entity.User { UserName = "test" , Image = "team-3.jpg" }
                         );
                     context.SaveChanges();
 
@@ -49,7 +49,13 @@ namespace BlogApp.Data.Concrete.EFCore
                             PusblishedOn = DateTime.Now.AddDays(-10),
                             Tags = context.Tags.Take(3).ToList(),
                             UserID =1,
-                            Url= "aspnet-core-dersleri"
+                            Url= "aspnet-core-dersleri",
+                            Comments = new List<Comment> { 
+                                new Comment {Text = "Mükemmel Bir Kurs",PublishedOn = DateTime.Now,UserID = 1}, 
+                                new Comment {Text = "Çok iyi şeyler öğrendim",PublishedOn = DateTime.Now.AddHours(-10),UserID = 2}, 
+                                new Comment {Text = "Teşekkürler Gerçekten",PublishedOn = DateTime.Now.AddDays(1),UserID = 3} 
+                            }
+
                         },new Entity.Post { Title = "Asp.net MVC",
                             Content = "Asp.net MVC dersleri",
                             IsActive = true,
