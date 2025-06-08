@@ -4,6 +4,7 @@ using BlogApp.Entity;
 using BlogApp.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System.Security.Claims;
 
 namespace BlogApp.Controllers
 {
@@ -46,23 +47,27 @@ namespace BlogApp.Controllers
         }
 
         [HttpPost]
-        public JsonResult AddComment(int PostID, string UserName, string Text)
+        public JsonResult AddComment(int PostID, string Text)
         {
+            var userID = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var userName = User.FindFirstValue(ClaimTypes.Name);
+            var avatar = User.FindFirstValue(ClaimTypes.UserData);
+
             var entity = new Comment
             {
                 Text = Text,
                 PublishedOn = DateTime.Now,
                 PostID = PostID,
-                User = new User { UserName = UserName, Image = "team-5.jpg" },
+                UserID = int.Parse(userID ?? ""),
             };
             _commentrepository.CreateComment(entity);
 
             return Json(new
             {
-                UserName,
+                userName,
                 Text,
                 entity.PublishedOn,
-                entity.User.Image
+                avatar
             });
 
             //return Redirect("/posts/details/"+Url);

@@ -42,6 +42,7 @@ namespace BlogApp.Controllers
                     userClaims.Add(new Claim(ClaimTypes.NameIdentifier, isUser.UserID.ToString()));
                     userClaims.Add(new Claim(ClaimTypes.Name, isUser.UserName ?? ""));
                     userClaims.Add(new Claim(ClaimTypes.GivenName, isUser.Name ?? ""));
+                    userClaims.Add(new Claim(ClaimTypes.UserData, isUser.Image ?? ""));
 
                     //burada rol verilir
                     if(isUser.Email == "bugraozturk@hotmail.com")
