@@ -17,12 +17,18 @@ namespace BlogApp.Controllers
 
 
 
-        public IActionResult Index()
+        public async Task<IActionResult> Index(string url)
         {
+            var posts = _postrepository.Posts;
+
+            if (!string.IsNullOrEmpty(url))
+            {
+                posts = posts.Where(x => x.Tags.Any(t => t.Url == url));
+            }
             return View(
                 new PostsViewModel
                 {
-                    Posts = _postrepository.Posts.ToList(),
+                    Posts = await posts.ToListAsync(),
 
                 }
 
@@ -31,7 +37,7 @@ namespace BlogApp.Controllers
 
         public async Task<IActionResult> Details(string url)
         {
-            return View(await _postrepository.Posts.FirstOrDefaultAsync(p=> p.Url == url));
+            return View(await _postrepository.Posts.FirstOrDefaultAsync(p => p.Url == url));
         }
     }
 }
