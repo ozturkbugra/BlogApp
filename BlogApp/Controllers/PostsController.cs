@@ -8,12 +8,10 @@ namespace BlogApp.Controllers
     public class PostsController : Controller
     {
         private IPostRepository _postrepository;
-        private ITagRepository _tagrepository;
 
-        public PostsController(IPostRepository postRepository, ITagRepository tagrepository)
+        public PostsController(IPostRepository postRepository)
         {
             _postrepository = postRepository;
-            _tagrepository = tagrepository;
         }
 
 
@@ -24,7 +22,6 @@ namespace BlogApp.Controllers
                 new PostsViewModel
                 {
                     Posts = _postrepository.Posts.ToList(),
-                    Tags = _tagrepository.Tags.ToList()
 
                 }
 
