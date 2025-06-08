@@ -25,7 +25,7 @@ namespace BlogApp.Controllers
         {
             var claims = User.Claims;
 
-            var posts = _postrepository.Posts;
+            var posts = _postrepository.Posts.Where(x=> x.IsActive == true);
 
             if (!string.IsNullOrEmpty(url))
             {
@@ -73,8 +73,8 @@ namespace BlogApp.Controllers
             //return Redirect("/posts/details/"+Url);
         }
 
-       
-        public ActionResult Create()
+
+        public IActionResult Create() 
         {
             if (!User.Identity!.IsAuthenticated)
             {
@@ -83,7 +83,68 @@ namespace BlogApp.Controllers
             return View();
         }
 
-    
+
+        public IActionResult Edit(int? id)
+        {
+            if (!User.Identity!.IsAuthenticated)
+            {
+                return RedirectToAction("Index");
+            }
+
+            if(id == null)
+            {
+                return NotFound();
+            }
+
+            var post = _postrepository.Posts.FirstOrDefault(x => x.PostID == id);
+
+            if(post == null)
+            {
+                return NotFound();
+            }
+
+            return View(new PostCreateViewModel
+            {
+                PostID = post.PostID,
+                Content = post.Content,
+                Description = post.Description,
+                Title = post.Title,
+                Url = post.Url,
+                IsActive = post.IsActive
+            });
+        }
+
+        [HttpPost]
+        public IActionResult Edit(PostCreateViewModel model)
+        {
+            if (!User.Identity!.IsAuthenticated)
+            {
+                return RedirectToAction("Index");
+            }
+
+            if (ModelState.IsValid)
+            {
+                var update = new Post
+                {
+                    PostID = model.PostID,
+                    Title = model.Title,
+                    Description = model.Description,
+                    Content = model.Content,
+                    Url = model.Url
+                };
+
+                if(User.FindFirstValue(ClaimTypes.Role) == "admin")
+                {
+                    update.IsActive = model.IsActive;
+                }
+                _postrepository.EditPost(update);
+                return RedirectToAction("List");
+            }
+            return View(model);
+        }
+
+
+
         public async Task<IActionResult> List()
         {
             if (!User.Identity!.IsAuthenticated)
@@ -106,7 +167,6 @@ namespace BlogApp.Controllers
         }
 
         [HttpPost]
-        [Authorize]
         public ActionResult Create(PostCreateViewModel model)
         {
             var userID = User.FindFirstValue(ClaimTypes.NameIdentifier);
