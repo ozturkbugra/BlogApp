@@ -43,6 +43,7 @@ namespace BlogApp.Data.Concrete.EFCore
                 {
                     context.Posts.AddRange(
                         new Entity.Post { Title = "Asp.net Core",
+                            Description = "Asp.net Core dersleri",
                             Content = "Asp.net Core dersleri",
                             IsActive = true,
                             Image = "core.jpg",
@@ -57,6 +58,7 @@ namespace BlogApp.Data.Concrete.EFCore
                             }
 
                         },new Entity.Post { Title = "Asp.net MVC",
+                            Description = "Asp.net MVC dersleri",
                             Content = "Asp.net MVC dersleri",
                             IsActive = true,
                             Image = "mvc.png",
@@ -65,6 +67,7 @@ namespace BlogApp.Data.Concrete.EFCore
                             UserID =2,
                             Url = "aspnet-mvc-dersleri"
                         },new Entity.Post { Title = "HTML",
+                            Description = "Html dersleri",
                             Content = "Html dersleri",
                             IsActive = true,
                             Image = "html.jpg",

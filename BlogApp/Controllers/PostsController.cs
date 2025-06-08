@@ -72,5 +72,42 @@ namespace BlogApp.Controllers
 
             //return Redirect("/posts/details/"+Url);
         }
+
+
+        public ActionResult Create()
+        {
+            if (!User.Identity!.IsAuthenticated)
+            {
+                return RedirectToAction("Index", "Posts");
+            }
+
+            return View();
+        }
+
+        [HttpPost]
+        public ActionResult Create(PostCreateViewModel model)
+        {
+            var userID = User.FindFirstValue(ClaimTypes.NameIdentifier);
+
+            if (ModelState.IsValid)
+            {
+                _postrepository.CreatePost(new Post
+                {
+                    Title = model.Title,
+                    Content = model.Content,
+                    Description = model.Description,
+                    Url = model.Url,
+                    UserID = int.Parse(userID),
+                    PusblishedOn = DateTime.Now,
+                    Image = "mvc.png",
+                    IsActive = false,
+
+
+                });
+
+                return RedirectToAction("Index");
+            }
+            return View(model);
+        }
     }
 }
