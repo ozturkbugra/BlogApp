@@ -14,11 +14,13 @@ namespace BlogApp.Controllers
 
         private IPostRepository _postrepository;
         private ICommentRepository _commentrepository;
+        private ITagRepository _tagrepository;
 
-        public PostsController(IPostRepository postRepository, ICommentRepository commentrepository)
+        public PostsController(IPostRepository postRepository, ICommentRepository commentrepository, ITagRepository tagrepository)
         {
             _postrepository = postRepository;
             _commentrepository = commentrepository;
+            _tagrepository = tagrepository;
         }
 
         public async Task<IActionResult> Index(string url)
@@ -96,12 +98,14 @@ namespace BlogApp.Controllers
                 return NotFound();
             }
 
-            var post = _postrepository.Posts.FirstOrDefault(x => x.PostID == id);
+            var post = _postrepository.Posts.Include(x=> x.Tags).FirstOrDefault(x => x.PostID == id);
 
             if(post == null)
             {
                 return NotFound();
             }
+
+            ViewBag.Tags = _tagrepository.Tags.ToList();
 
             return View(new PostCreateViewModel
             {
@@ -110,12 +114,13 @@ namespace BlogApp.Controllers
                 Description = post.Description,
                 Title = post.Title,
                 Url = post.Url,
-                IsActive = post.IsActive
+                IsActive = post.IsActive,
+                Tags = post.Tags
             });
         }
 
         [HttpPost]
-        public IActionResult Edit(PostCreateViewModel model)
+        public IActionResult Edit(PostCreateViewModel model, int[] TagIDs)
         {
             if (!User.Identity!.IsAuthenticated)
             {
@@ -137,7 +142,7 @@ namespace BlogApp.Controllers
                 {
                     update.IsActive = model.IsActive;
                 }
-                _postrepository.EditPost(update);
+                _postrepository.EditPost(update,TagIDs);
                 return RedirectToAction("List");
             }
             return View(model);
