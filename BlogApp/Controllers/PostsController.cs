@@ -43,7 +43,8 @@ namespace BlogApp.Controllers
             return View(await _postrepository.Posts.Include(x=> x.Tags).Include(x=> x.Comments).ThenInclude(x=> x.User).FirstOrDefaultAsync(p => p.Url == url));
         }
 
-        public IActionResult AddComment(int PostID, string UserName, string Text, string Url)
+        [HttpPost]
+        public JsonResult AddComment(int PostID, string UserName, string Text)
         {
             var entity = new Comment
             {
@@ -53,7 +54,16 @@ namespace BlogApp.Controllers
                 User = new User { UserName = UserName, Image = "team-5.jpg" },
             };
             _commentrepository.CreateComment(entity);
-            return Redirect("/posts/details/"+Url);
+
+            return Json(new
+            {
+                UserName,
+                Text,
+                entity.PublishedOn,
+                entity.User.Image
+            });
+
+            //return Redirect("/posts/details/"+Url);
         }
     }
 }
