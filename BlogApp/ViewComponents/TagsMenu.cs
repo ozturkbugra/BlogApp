@@ -1,5 +1,6 @@
 ﻿using BlogApp.Data.Abstract;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace BlogApp.ViewComponents
 {
@@ -12,9 +13,9 @@ namespace BlogApp.ViewComponents
             _tagrepository = tagrepository;
         }
 
-        public IViewComponentResult Invoke()
+        public async Task<IViewComponentResult> InvokeAsync()
         {
-            return View(_tagrepository.Tags.ToList());
+            return View(await _tagrepository.Tags.ToListAsync());
         }
     }
 }
