@@ -19,10 +19,10 @@ namespace BlogApp.Data.Concrete.EFCore
                 {
                     context.Tags.AddRange(
 
-                        new Entity.Tag { Text = "Web Programlama" },
-                        new Entity.Tag { Text = "Backend" },
-                        new Entity.Tag { Text = "Frontend" },
-                        new Entity.Tag { Text = "Full Stack" }
+                        new Entity.Tag { Text = "Web Programlama", Url= "web-programlama" },
+                        new Entity.Tag { Text = "Backend", Url = "backend" },
+                        new Entity.Tag { Text = "Frontend", Url = "frontend" },
+                        new Entity.Tag { Text = "Full Stack", Url = "full-stack" }
                     );
                     context.SaveChanges();
                 }
@@ -47,21 +47,24 @@ namespace BlogApp.Data.Concrete.EFCore
                             Image = "core.jpg",
                             PusblishedOn = DateTime.Now.AddDays(-10),
                             Tags = context.Tags.Take(3).ToList(),
-                            UserID =1
+                            UserID =1,
+                            Url= "aspnet-core-dersleri"
                         },new Entity.Post { Title = "Asp.net MVC",
                             Content = "Asp.net MVC dersleri",
                             IsActive = true,
                             Image = "mvc.png",
                             PusblishedOn = DateTime.Now.AddDays(-5),
                             Tags = context.Tags.Take(2).ToList(),
-                            UserID =2
+                            UserID =2,
+                            Url = "aspnet-mvc-dersleri"
                         },new Entity.Post { Title = "HTML",
                             Content = "Html dersleri",
                             IsActive = true,
                             Image = "html.jpg",
                             PusblishedOn = DateTime.Now.AddDays(-2),
                             Tags = context.Tags.Take(2).ToList(),
-                            UserID =3
+                            UserID =3,
+                            Url = "html"
                         }
 
                         );

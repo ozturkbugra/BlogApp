@@ -5,6 +5,7 @@
         public int PostID { get; set; }
         public string? Title { get; set; }
         public string? Content { get; set; }
+        public string? Url { get; set; }
         public string? Image { get; set; }
         public DateTime PusblishedOn { get; set; }
         public bool IsActive { get; set; }
