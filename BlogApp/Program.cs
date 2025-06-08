@@ -13,6 +13,7 @@ builder.Services.AddDbContext<BlogContext>(options =>
 
 builder.Services.AddScoped<IPostRepository, EFPostRepository>();
 builder.Services.AddScoped<ITagRepository, EFTagRepository>();
+builder.Services.AddScoped<ICommentRepository, EFCommentRepository>();
 
 var app = builder.Build();
 
@@ -36,7 +37,7 @@ app.UseAuthorization();
 
 app.MapControllerRoute(
     name: "post_details",
-    pattern: "posts/{url}",
+    pattern: "posts/details/{url}",
     defaults: new { controller = "Posts", action = "Details" }
     );
 

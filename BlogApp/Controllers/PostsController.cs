@@ -1,5 +1,6 @@
 ﻿using BlogApp.Data.Abstract;
 using BlogApp.Data.Concrete.EFCore;
+using BlogApp.Entity;
 using BlogApp.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -9,10 +10,12 @@ namespace BlogApp.Controllers
     public class PostsController : Controller
     {
         private IPostRepository _postrepository;
+        private ICommentRepository _commentrepository;
 
-        public PostsController(IPostRepository postRepository)
+        public PostsController(IPostRepository postRepository, ICommentRepository commentrepository)
         {
             _postrepository = postRepository;
+            _commentrepository = commentrepository;
         }
 
 
@@ -38,6 +41,19 @@ namespace BlogApp.Controllers
         public async Task<IActionResult> Details(string url)
         {
             return View(await _postrepository.Posts.Include(x=> x.Tags).Include(x=> x.Comments).ThenInclude(x=> x.User).FirstOrDefaultAsync(p => p.Url == url));
+        }
+
+        public IActionResult AddComment(int PostID, string UserName, string Text, string Url)
+        {
+            var entity = new Comment
+            {
+                Text = Text,
+                PublishedOn = DateTime.Now,
+                PostID = PostID,
+                User = new User { UserName = UserName, Image = "team-5.jpg" },
+            };
+            _commentrepository.CreateComment(entity);
+            return Redirect("/posts/details/"+Url);
         }
     }
 }
