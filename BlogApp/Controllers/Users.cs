@@ -21,6 +21,10 @@ namespace BlogApp.Controllers
 
         public IActionResult Login()
         {
+            if (User.Identity!.IsAuthenticated)
+            {
+                return RedirectToAction("Index", "Posts");
+            }
             return View();
         }
 
@@ -71,6 +75,12 @@ namespace BlogApp.Controllers
             return View(model);
         }
 
-       
+
+        public async Task<IActionResult> Logout()
+        {
+            await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
+            return RedirectToAction("Login");
+        }
+
     }
 }
